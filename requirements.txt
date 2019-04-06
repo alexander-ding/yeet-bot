@@ -1,0 +1,4 @@
+opencv-python
+dlib
+discord.py
+Pillow
