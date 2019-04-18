@@ -114,7 +114,7 @@ class Overlay(Base):
             height_after = detection.height()*settings.height_ratio
 
             foreground_resized = foreground.resize((floor(width_after), floor(height_after)), Image.BICUBIC)
-            foreground_resized = foreground_resized.rotate(angle)
+            foreground_resized = foreground_resized.rotate(-angle)
 
             left_after = detection.left()-detection.width()*(settings.width_ratio-1)/2
             left_after += settings.x_shift*width_after
