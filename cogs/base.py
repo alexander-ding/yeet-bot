@@ -33,4 +33,7 @@ class Base:
             -------
             (Bool, String, String)
         """
-        return False, "Attachment is not yet supported.", None
+        if (len(context.message.attachments) == 0):
+            return False, "No attachment found!", ""
+        
+        return True, None, str(context.message.attachments[0]['url'])

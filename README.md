@@ -1,6 +1,6 @@
 # YeetBot
 
-This is a Discord Bot (YeetBot#8201) that takes one image and overlays all detected faces in that image with a custom mask.
+This is a Discord Bot [https://discordapp.com/api/oauth2/authorize?client_id=563019457367375882&permissions=34816&redirect_uri=https%3A%2F%2Fwww.github.com%2Falexding123&scope=bot]((OAuth)) that takes one image and overlays all detected faces in that image with a custom mask.
 
 
 ## Getting Started: TODOOOOO
