@@ -1,6 +1,6 @@
 # YeetBot
 
-This is a Discord Bot [(OAuth)](https://discordapp.com/api/oauth2/authorize?client_id=563019457367375882&permissions=34816&redirect_uri=https%3A%2F%2Fwww.github.com%2Falexding123&scope=bot) that takes one image and overlays all detected faces in that image with a custom mask. Just go click on the `OAuth` link for invitation!
+This is a Discord Bot that takes one image and overlays all detected faces in that image with a custom mask. Find out more about it on [Bots on Discord](https://bots.ondiscord.xyz/bots/563019457367375882)! 
 
 ![image](https://media.giphy.com/media/fs9AJxWGFy56YmcHTp/giphy.gif)
 
@@ -12,9 +12,6 @@ All commands start with `!`.
 * !set <url>: sets the current filter. Can also accept an attachment instead.
 * !clean: clears the rim of the current filter. *Defunct as of now*
 * !default: sets filter to the default filter
-
-
-
 
 
 
