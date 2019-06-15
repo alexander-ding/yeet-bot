@@ -1,5 +1,6 @@
 """ The cog class where the core overlay functionality is defined
 """
+import discord
 from discord.ext import commands
 from cogs.base import Base
 from utils.web import get_image
@@ -57,23 +58,23 @@ class Overlay(Base):
             if len(command_comps) == 1:
                 await self.say(context, overlay_usage)
                 return
-        print(url)
+
         ok, err, background = get_image(url)
         if not ok:
             await self.say(context, err)
             return
 
         username = str(context.message.author)
-        settings = self.bot.get_cog("Settings").settings
-        foreground = settings[username].get_foreground_image()
+        settings = self.bot.get_cog("Settings")
+        foreground = settings.get(username).get_foreground_image()
         
         try:
-            io_buffer = self.apply_overlay(background, foreground, settings[username])
+            io_buffer = self.apply_overlay(background, foreground, settings.get(username))
         except Exception as e:
             await self.say(context, "Error overlaying! Sorry mate")
             print("Error: ", e)
             return
-        await self.bot.send_file(context.message.channel, io_buffer, filename="new.jpeg")
+        await self.say(context, "", discord.File(io_buffer, "new.jpeg"))
 
     def get_orientation(self, img, rect):
         """ Get the orientation of the face (circled by the rect

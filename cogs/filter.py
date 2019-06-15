@@ -1,4 +1,5 @@
 from cogs.base import Base
+import discord
 from discord.ext import commands
 
 from utils.web import get_image
@@ -7,7 +8,7 @@ from PIL import Image
 import numpy as np
 import cv2
 
-default_usage = "Sets current filter to the default image"
+default_usage = "Sets current filter to the default image and defaults all settings"
 clean_usage = "Cleans the current filter's background and adds an alpha layer (if not already existing). \nUsage: !clean"
 set_usage = "Sets the current filter to the supplied image. \nUsage: !set <url> or !set, attaching an image as the new filter"
 class Filter(Base):
@@ -16,12 +17,11 @@ class Filter(Base):
                       brief=default_usage,
                       pass_context=True)
     async def default(self, context):
-        settings = self.bot.get_cog("Settings").settings
+        settings = self.bot.get_cog("Settings")
         author = str(context.message.author)
-        settings[author].foreground = settings[author].default_image_name
-        with open("pictures/{}".format(settings[author].foreground), mode="rb") as fp:
-            await self.bot.send_file(context.message.channel, fp, filename="default.png")
-            await self.say(context, "Filter set to default. Beautiful as always")
+        settings.get(author).default()
+        with open("data/pictures/{}".format(settings.get(author).foreground), mode="rb") as fp:
+            await self.say(context, "Filter set to default. Beautiful as always", discord.File(fp, filename="default.png"))
 
     @commands.command(name='set',
                 description="Sets your custom filter to superimpose on people's faces. Pass a link or an attachment! A filter is stored for each user",
@@ -56,38 +56,54 @@ class Filter(Base):
             await self.say(context, err)
             return
         
-        settings = self.bot.get_cog("Settings").settings
+        settings = self.bot.get_cog("Settings")
 
         image_filename = "{}.{}".format(username, filter_image.format)
         # save the actual image
-        filter_image.save("pictures/{}".format(image_filename))
+        filter_image.save("data/pictures/{}".format(image_filename))
         # save to settings
-        settings[username].foreground = image_filename
+        settings.get(username).foreground = image_filename
 
         await self.say(context, "Gotcha homie")
 
+    @commands.command(name='what',
+                description="Shows what your current filter is",
+                brief="What is your current filter?",
+                pass_context=True)
+    async def what(self, context):
+        settings = self.bot.get_cog("Settings")
+        author = str(context.message.author)
+        image_name = settings.get(author).foreground
+        d = settings.get(author).jsonify()
+
+        settings_str = ""
+
+        for k in d.keys():
+            if k != "foreground":
+                settings_str += "{}: {}\n".format(k,d[k])
+        
+        with open("data/pictures/{}".format(image_name), mode="rb") as fp:
+            await self.say(context, "This is your current filter, with settings:\n"+settings_str, discord.File(fp, "filter.{}".format(image_name.split(".")[-1])))
 
     @commands.command(name='clean',
                       description=clean_usage,
                       brief="Cleans the *rim* of your current filter",
                       pass_context=True)
     async def clean(self, context):
-        settings = self.bot.get_cog("Settings").settings
+        settings = self.bot.get_cog("Settings")
         author = str(context.message.author)
         # only people who do not have the default image as the current filter can clean
-        if author not in [key for key in settings.keys() if settings[key].foreground != "_default_.png"]:
+        if not settings.exists(author) and settings.get(author).foreground != "_default_.png":
             await self.say(context, "Set a filter first with !set")
             return
-        im = settings[author].get_foreground_image()
+        im = settings.get(author).get_foreground_image()
         im = self.clean_image(im)
 
-        with open("pictures/{}.png".format(context.message.author), mode="wb") as fp:
+        with open("data/pictures/{}.png".format(author), mode="wb") as fp:
             im.save(fp)
-        settings[author].foreground = "{}.png".format(context.message.author)
-
-        with open("pictures/{}.png".format(context.message.author), mode="rb") as fp:
-            await self.bot.send_file(context.message.channel, fp, filename="cleaned.png")
-            await self.say(context, "Cleaned it up for ya")
+        settings.set_foreground(author, "{}.png".format(author))
+        with open("data/pictures/{}.png".format(author), mode="rb") as fp:
+            await self.say(context, "Cleaned it up for ya", file=discord.File(fp, "cleaned.png"))
 
     def clean_image(self, img):
         """ Just a helper function. Cleans image's background and adds a transparency
@@ -95,6 +111,18 @@ class Filter(Base):
         """
         if np.array(img).shape[2] == 3: # no transparency
             return self.remove_background(img)
+        return self.replace_white_with_transparent(img)
+
+    def replace_white_with_transparent(self, img):
+        data = list(img.getdata())
+        data_new = []
+        for point in data:
+            if point[0] == 255 and point[1] == 255 and point[2] == 255:
+                data_new.append((255,255,255,0))
+            else:
+                data_new.append(point)
+
+        img.putdata(data_new)
         return img
 
     def remove_background(self, img):

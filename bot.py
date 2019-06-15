@@ -8,6 +8,7 @@ load_dotenv(find_dotenv())
 import os
 TOKEN = os.environ["YEETBOT_TOKEN"]
 
+import discord
 from discord.ext import commands
 
 prefix = "!"
@@ -19,9 +20,8 @@ bot.load_extension("cogs.settings")
 
 @bot.event
 async def on_ready():
-    print('Logged in as')
-    print(bot.user.name)
-    print(bot.user.id)
-    print('------')
+    help_text = "!help for more information"
+    activity = discord.Game(name=help_text)
+    await bot.change_presence(status=discord.Status.online, activity=activity)
 
 bot.run(TOKEN)
