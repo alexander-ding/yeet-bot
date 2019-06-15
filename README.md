@@ -11,7 +11,7 @@ All commands start with `!`.
 - !help: get help
 - !yeet <url>: overlays the current filter onto all faces found in the image. Can also accept an attachment instead.
 - !set <url>: sets the current filter. Can also accept an attachment instead.
-- !clean: clears the rim of the current filter. *Defunct as of now*
+- !clean: clears the rim of the current filter. 
 - !default: sets filter to the default filter
 
 
