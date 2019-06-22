@@ -17,6 +17,7 @@ bot = commands.Bot(command_prefix=prefix)
 bot.load_extension("cogs.filter")
 bot.load_extension("cogs.overlay")
 bot.load_extension("cogs.settings")
+bot.load_extension("cogs.info")
 
 @bot.event
 async def on_ready():
