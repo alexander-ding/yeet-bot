@@ -1,6 +1,6 @@
 # YeetBot
 
-This is a Discord Bot that takes one image and overlays all detected faces in that image with a custom mask. Find out more about it on [Bots on Discord](https://bots.ondiscord.xyz/bots/563019457367375882)! 
+This is a Discord Bot that takes one image and overlays all detected faces in that image with a custom mask. Find out more about it on [Bots on Discord](https://bots.ondiscord.xyz/bots/563019457367375882) and [Discord Bot List](https://discordbots.org/bot/563019457367375882).  
 
 ![image](https://media.giphy.com/media/fs9AJxWGFy56YmcHTp/giphy.gif)
 
@@ -15,7 +15,7 @@ All commands start with `!`.
 - !default: sets filter to the default filter
 
 
-## Getting Started: TODOOOOO
+## Getting Started
 
 1. Make sure you have all the [dependencies](#dependencies) required.
 2. Clone this directory from GitHub with ```git clone https://github.com/alexding123/YeetBot.git```
