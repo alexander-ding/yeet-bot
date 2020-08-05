@@ -1,7 +1,6 @@
-FROM python:3.6
+FROM continuumio/anaconda3
 
-# calm down and do some basics
-RUN apt-get update && apt-get install gcc -y && apt-get -y install cmake
+RUN conda install -c conda-forge dlib=19.17
 
 COPY requirements.txt /opt/
 WORKDIR /opt/
