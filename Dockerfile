@@ -7,9 +7,8 @@ COPY requirements.txt /opt/
 WORKDIR /opt/
 
 # then get the packages down
-RUN pip install -r requirements.txt --upgrade
+RUN pip install -r requirements.txt
 
-# install DlibModels
 COPY . /opt/server/
 WORKDIR /opt/server
 
