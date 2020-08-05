@@ -1,6 +1,4 @@
-FROM continuumio/anaconda3
-
-RUN conda install -c conda-forge dlib=19.17
+FROM yuiti/python-dlib
 
 COPY requirements.txt /opt/
 WORKDIR /opt/
