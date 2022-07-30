@@ -1,5 +1,7 @@
 FROM yuiti/python-dlib
 
+RUN pip install --upgrade pip
+
 COPY requirements.txt /opt/
 WORKDIR /opt/
 
