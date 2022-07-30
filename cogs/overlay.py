@@ -7,10 +7,10 @@ from utils.web import get_image
 
 # setup for Dlib
 import dlib
-from dlib_models import download_model, download_predictor, load_dlib_models
+from DlibModels import download_model, download_predictor, load_dlib_models
 download_model()
 download_predictor()
-from dlib_models import models
+from DlibModels import models
 
 # all the little packages
 from pathlib import Path

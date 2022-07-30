@@ -5,4 +5,3 @@ discord.py==1.3.4
 Pillow
 requests
 imutils
-git+git://github.com/alexander-ding/DlibModels.git
